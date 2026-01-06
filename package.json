@@ -1,0 +1,26 @@
+{
+  "name": "claude-canvas",
+  "module": "src/cli.ts",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "claude-canvas": "src/cli.ts"
+  },
+  "scripts": {
+    "start": "bun run src/cli.ts",
+    "show": "bun run src/cli.ts show",
+    "spawn": "bun run src/cli.ts spawn"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/react": "^19.2.7"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "commander": "^14.0.2",
+    "ink": "^6.6.0",
+    "ink-spinner": "^5.0.0"
+  }
+}
