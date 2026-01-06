@@ -2,6 +2,8 @@
 
 A TUI toolkit that gives Claude Code its own display. Spawn interactive terminal interfaces for emails, calendars, flight bookings, and more.
 
+**Note:** This is a proof of concept and is unsupported.
+
 ![Claude Canvas Screenshot](media/screenshot.png)
 
 ## Requirements
