@@ -1,0 +1,8 @@
+{
+  "name": "canvas",
+  "description": "Interactive terminal TUI components with real-time Agent Monitor for sub-agent tracking",
+  "author": {
+    "name": "Alfonso Gomez",
+    "email": "stein.hakase.vs@gmail.com"
+  }
+}

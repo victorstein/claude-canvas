@@ -24,7 +24,10 @@
       "Bash(git commit:*)",
       "Bash(git tag:*)",
       "Bash(/opt/homebrew/bin/bun run:*)",
-      "Bash(/opt/homebrew/bin/bun install:*)"
+      "Bash(/opt/homebrew/bin/bun install:*)",
+      "Bash(bun:*)",
+      "Bash(echo:*)",
+      "Bash(xargs -I {} sh -c 'echo \"\"\"\"=== {} ===\"\"\"\" && cat {}')"
     ]
   }
 }
