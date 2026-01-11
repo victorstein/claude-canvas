@@ -127,8 +127,8 @@ export function ContentPane({
   }, [allItems, searchQuery]);
 
   // Calculate visible window
-  // Account for: border (2) + header with margin (2) + scroll indicator (1) + bottom padding (2)
-  const contentHeight = height - 7;
+  // Account for: border (2) + header with margin (2) + scroll indicator (1) + bottom padding (4)
+  const contentHeight = height - 9;
   // Clamp scrollOffset to valid range
   const maxScroll = Math.max(0, items.length - contentHeight);
   const clampedOffset = Math.min(scrollOffset, maxScroll);

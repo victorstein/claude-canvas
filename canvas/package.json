@@ -1,6 +1,6 @@
 {
   "name": "@claude-canvas/canvas",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "module": "src/cli.ts",
   "type": "module",
   "bin": {
