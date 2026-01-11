@@ -20,7 +20,8 @@
       "Bash(git remote add:*)",
       "Bash(git push:*)",
       "Bash(git -C /Users/alfonsogomez/Documents/development/personal/claude-canvas status)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
