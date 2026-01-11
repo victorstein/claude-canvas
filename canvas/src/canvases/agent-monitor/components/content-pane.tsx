@@ -98,6 +98,9 @@ export function ContentPane({
   // Build and memoize content items
   const allItems = useMemo(() => buildContentItems(agent), [agent]);
 
+  // Debug: log what we're rendering
+  Bun.write("/tmp/content-pane-debug.log", `[${new Date().toISOString()}] Agent output: ${agent.output.length}, allItems: ${allItems.length}, status: ${agent.status}\n`, { append: true });
+
   // Filter items based on search query
   const items = useMemo(() => {
     if (!searchQuery) return allItems;
@@ -125,12 +128,14 @@ export function ContentPane({
 
   // Calculate visible window
   const contentHeight = height - 4; // Account for header and padding
-  const visibleItems = items.slice(scrollOffset, scrollOffset + contentHeight);
+  // Clamp scrollOffset to valid range
+  const maxScroll = Math.max(0, items.length - contentHeight);
+  const clampedOffset = Math.min(scrollOffset, maxScroll);
+  const visibleItems = items.slice(clampedOffset, clampedOffset + contentHeight);
 
   // Calculate scroll percentage
-  const maxScroll = Math.max(0, items.length - contentHeight);
   const scrollPercent =
-    maxScroll > 0 ? Math.round((scrollOffset / maxScroll) * 100) : 100;
+    maxScroll > 0 ? Math.round((clampedOffset / maxScroll) * 100) : 100;
 
   const contentWidth = width - 4;
 

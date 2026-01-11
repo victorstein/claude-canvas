@@ -28,7 +28,11 @@
       "Bash(bun:*)",
       "Bash(echo:*)",
       "Bash(xargs -I {} sh -c 'echo \"\"\"\"=== {} ===\"\"\"\" && cat {}')",
-      "Bash(~/.claude/plugins/cache/claude-canvas/canvas/0.2.2/run-canvas.sh:*)"
+      "Bash(~/.claude/plugins/cache/claude-canvas/canvas/0.2.2/run-canvas.sh:*)",
+      "Bash(python3 -m json.tool:*)",
+      "Bash(python3:*)",
+      "Bash(lsof:*)",
+      "Bash(cat:*)"
     ]
   }
 }

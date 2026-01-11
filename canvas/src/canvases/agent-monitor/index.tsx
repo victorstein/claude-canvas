@@ -122,7 +122,7 @@ export function AgentMonitorCanvas({
     };
   }, [stdout]);
 
-  // Set up IPC server for receiving updates
+  // Set up IPC server for receiving close commands
   useEffect(() => {
     if (!socketPath) return;
 
@@ -130,7 +130,6 @@ export function AgentMonitorCanvas({
 
     const startServer = async () => {
       try {
-        // Remove existing socket file if it exists
         const file = Bun.file(socketPath);
         if (await file.exists()) {
           await Bun.$`rm -f ${socketPath}`;
@@ -139,40 +138,26 @@ export function AgentMonitorCanvas({
         server = Bun.listen({
           unix: socketPath,
           socket: {
-            open(socket) {
-              // Connection established
-            },
+            open() {},
             data(socket, data) {
               try {
                 const lines = data.toString().split("\n").filter((l) => l.trim());
                 for (const line of lines) {
                   const msg = JSON.parse(line);
-
-                  if (msg.type === "update" && msg.config) {
-                    const config = msg.config as AgentMonitorConfig;
-                    setAgents(config.agents);
-
-                    // Auto-select first tab if none selected
-                    setActiveTabId((current) => {
-                      if (!current) {
-                        return Object.keys(config.agents)[0] ?? null;
-                      }
-                      return current;
-                    });
-                  } else if (msg.type === "close") {
+                  if (msg.type === "close") {
                     exit();
                   }
                 }
               } catch {
-                // Ignore parse errors
+                // Ignore errors
               }
             },
             close() {},
             error() {},
           },
         });
-      } catch (e) {
-        console.error("Failed to start IPC server:", e);
+      } catch {
+        // Ignore server errors
       }
     };
 
@@ -183,45 +168,43 @@ export function AgentMonitorCanvas({
     };
   }, [socketPath, exit]);
 
-  // Poll tracking file for updates (backup for IPC)
+  // Poll tracking file for updates
   useEffect(() => {
     const parentSessionId = initialConfig?.parentSessionId;
     if (!parentSessionId) return;
 
     const trackingPath = `/tmp/claude-agents-${parentSessionId}.json`;
-    let lastModified = 0;
+    let lastContent = "";
 
     const pollTracking = async () => {
       try {
         const file = Bun.file(trackingPath);
-        const stat = await file.stat();
+        if (!(await file.exists())) return;
 
-        // Only update if file was modified
-        if (stat && stat.mtime && stat.mtime.getTime() > lastModified) {
-          lastModified = stat.mtime.getTime();
-          const content = await file.text();
-          if (content.trim()) {
-            const tracking = JSON.parse(content);
-            if (tracking.agents) {
-              setAgents(tracking.agents);
+        const content = await file.text();
+        if (!content.trim() || content === lastContent) return;
 
-              // Auto-select first tab if none selected
-              setActiveTabId((current) => {
-                if (!current) {
-                  return Object.keys(tracking.agents)[0] ?? null;
-                }
-                return current;
-              });
+        lastContent = content;
+        const tracking = JSON.parse(content);
+
+        if (tracking.agents) {
+          setAgents(tracking.agents);
+
+          // Auto-select first tab if none selected
+          setActiveTabId((current) => {
+            if (!current) {
+              return Object.keys(tracking.agents)[0] ?? null;
             }
-          }
+            return current;
+          });
         }
       } catch {
         // Ignore polling errors
       }
     };
 
-    // Poll every 500ms for responsive updates
-    const interval = setInterval(pollTracking, 500);
+    // Poll every 300ms for responsive updates
+    const interval = setInterval(pollTracking, 300);
 
     // Initial poll
     pollTracking();

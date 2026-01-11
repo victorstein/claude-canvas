@@ -117,11 +117,22 @@ if (input.tool_name === "Task" || input.tool_name === "dispatch_agent") {
           agent.endTime = Date.now();
 
           // Add the result as output
-          if (input.tool_result) {
+          // Task tool returns result in tool_response.content
+          const toolResponse = (input as any).tool_response;
+          if (toolResponse?.content) {
+            const textContent = toolResponse.content
+              .filter((c: any) => c.type === "text")
+              .map((c: any) => c.text)
+              .join("\n");
+            if (textContent) {
+              agent.output = textContent.split("\n").slice(0, 100); // First 100 lines
+            }
+          } else if (input.tool_result) {
+            // Fallback to tool_result for other formats
             const result = typeof input.tool_result === "string"
               ? input.tool_result
               : JSON.stringify(input.tool_result, null, 2);
-            agent.output = result.split("\n").slice(0, 50); // First 50 lines
+            agent.output = result.split("\n").slice(0, 100);
           }
 
           // Save and send update
