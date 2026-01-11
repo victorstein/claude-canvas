@@ -181,18 +181,48 @@ const toolCall: ToolCallRecord = {
 // Add to agent's tool calls
 agent.toolCalls.push(toolCall);
 
-// Check for git-related tools and extract diff info
-if (input.tool_name === "Edit" || input.tool_name === "Write") {
-  // Extract file path from input
-  const filePath = input.tool_input?.file_path || input.tool_input?.path || "unknown";
+// Check for file modification tools and extract diff info
+if (input.tool_name === "Edit") {
+  const filePath = input.tool_input?.file_path || "unknown";
+  const oldString = input.tool_input?.old_string || "";
+  const newString = input.tool_input?.new_string || "";
 
-  // We don't have the actual diff here, but we can note the file was modified
+  // Create a simple diff display
+  const oldLines = String(oldString).split("\n");
+  const newLines = String(newString).split("\n");
+
+  const diffLines: string[] = [];
+  diffLines.push(`--- ${filePath}`);
+  diffLines.push(`+++ ${filePath}`);
+  diffLines.push(`@@ -1,${oldLines.length} +1,${newLines.length} @@`);
+  oldLines.slice(0, 5).forEach(line => diffLines.push(`-${line}`));
+  if (oldLines.length > 5) diffLines.push(`... (${oldLines.length - 5} more removed)`);
+  newLines.slice(0, 5).forEach(line => diffLines.push(`+${line}`));
+  if (newLines.length > 5) diffLines.push(`... (${newLines.length - 5} more added)`);
+
   agent.gitDiffs.push({
     timestamp: Date.now(),
     filePath: String(filePath),
-    additions: 0,
+    additions: newLines.length,
+    deletions: oldLines.length,
+    diff: diffLines.join("\n"),
+  });
+} else if (input.tool_name === "Write") {
+  const filePath = input.tool_input?.file_path || "unknown";
+  const content = input.tool_input?.content || "";
+  const lines = String(content).split("\n");
+
+  const diffLines: string[] = [];
+  diffLines.push(`+++ ${filePath} (new file)`);
+  lines.slice(0, 8).forEach(line => diffLines.push(`+${line}`));
+  if (lines.length > 8) diffLines.push(`... (${lines.length - 8} more lines)`);
+
+  agent.gitDiffs.push({
+    timestamp: Date.now(),
+    filePath: String(filePath),
+    additions: lines.length,
     deletions: 0,
-    diff: `File modified: ${filePath}`,
+    diff: diffLines.join("\n"),
   });
 }
 

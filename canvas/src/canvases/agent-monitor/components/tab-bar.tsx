@@ -74,17 +74,15 @@ export function TabBar({ agents, activeTabId, width }: TabBarProps) {
             {/* Tab number */}
             <Text
               bold={isActive}
-              backgroundColor={isActive ? THEME.activeBg : undefined}
-              color={isActive ? THEME.activeText : THEME.dim}
+              color={isActive ? THEME.neonCyan : THEME.dim}
             >
-              {` ${idx + 1} `}
+              {`${idx + 1} `}
             </Text>
 
             {/* Tab label */}
             <Text
               bold={isActive}
-              backgroundColor={isActive ? THEME.activeBg : undefined}
-              color={isActive ? THEME.activeText : THEME.dim}
+              color={isActive ? THEME.text : THEME.dim}
             >
               {label}
             </Text>
