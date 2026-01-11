@@ -95,7 +95,49 @@ async function sendIPCUpdate(tracking: AgentTrackingFile): Promise<void> {
   }
 }
 
-// Main execution
+// Check if this is a Task tool completion (sub-agent finished)
+if (input.tool_name === "Task" || input.tool_name === "dispatch_agent") {
+  // This is the parent session - a sub-agent just completed
+  const parentSession = input.session_id || process.env.CLAUDE_SESSION_ID || "default";
+  const trackingPath = `/tmp/claude-agents-${parentSession}.json`;
+
+  try {
+    const file = Bun.file(trackingPath);
+    if (await file.exists()) {
+      const content = await file.text();
+      if (content.trim()) {
+        const tracking: AgentTrackingFile = JSON.parse(content);
+
+        // Find the agent by tool_use_id
+        const agent = tracking.agents[input.tool_use_id];
+
+        if (agent) {
+          // Mark agent as completed
+          agent.status = input.tool_error ? "error" : "completed";
+          agent.endTime = Date.now();
+
+          // Add the result as output
+          if (input.tool_result) {
+            const result = typeof input.tool_result === "string"
+              ? input.tool_result
+              : JSON.stringify(input.tool_result, null, 2);
+            agent.output = result.split("\n").slice(0, 50); // First 50 lines
+          }
+
+          // Save and send update
+          await Bun.write(trackingPath, JSON.stringify(tracking, null, 2));
+          await sendIPCUpdate(tracking);
+        }
+      }
+    }
+  } catch {
+    // Ignore errors
+  }
+
+  process.exit(0);
+}
+
+// Main execution - for sub-agent tool calls
 const parentInfo = await findParentTracking();
 
 if (!parentInfo) {

@@ -27,7 +27,8 @@
       "Bash(/opt/homebrew/bin/bun install:*)",
       "Bash(bun:*)",
       "Bash(echo:*)",
-      "Bash(xargs -I {} sh -c 'echo \"\"\"\"=== {} ===\"\"\"\" && cat {}')"
+      "Bash(xargs -I {} sh -c 'echo \"\"\"\"=== {} ===\"\"\"\" && cat {}')",
+      "Bash(~/.claude/plugins/cache/claude-canvas/canvas/0.2.2/run-canvas.sh:*)"
     ]
   }
 }
