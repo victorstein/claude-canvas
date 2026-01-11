@@ -21,7 +21,10 @@
       "Bash(git push:*)",
       "Bash(git -C /Users/alfonsogomez/Documents/development/personal/claude-canvas status)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git tag:*)",
+      "Bash(/opt/homebrew/bin/bun run:*)",
+      "Bash(/opt/homebrew/bin/bun install:*)"
     ]
   }
 }
