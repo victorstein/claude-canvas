@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 import { program } from "commander";
-import { detectTerminal, spawnCanvas } from "./terminal";
+import { detectTerminal, spawnCanvas } from "./terminal/index";
 
 // Set window title via ANSI escape codes
 function setWindowTitle(title: string) {
@@ -55,7 +55,9 @@ program
   .action(() => {
     const env = detectTerminal();
     console.log("Terminal Environment:");
+    console.log(`  Multiplexer: ${env.multiplexer}`);
     console.log(`  In tmux: ${env.inTmux}`);
+    console.log(`  In WezTerm: ${env.inWezterm}`);
     console.log(`\nSummary: ${env.summary}`);
   });
 

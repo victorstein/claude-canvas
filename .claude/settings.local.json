@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bun install)",
+      "Bash(bun run:*)",
+      "Bash(timeout 2 bun run:*)",
+      "Bash(bunx tsc:*)",
+      "Bash(CLAUDE_SESSION_ID=test-session bun run:*)",
+      "Bash(/bin/bash -c \"cd /Users/alfonsogomez/Documents/development/personal/claude-canvas/canvas && npx tsc --noEmit 2>&1 | head -50\")",
+      "Bash(/bin/bash -c \"cd /Users/alfonsogomez/Documents/development/personal/claude-canvas/canvas && npx tsc --noEmit 2>&1 | grep ''agent-monitor''\")",
+      "Bash(/bin/bash -c \"cd /Users/alfonsogomez/Documents/development/personal/claude-canvas/canvas && npx tsc --noEmit 2>&1 | head -20\")",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(/bin/bash -c \"cd /Users/alfonsogomez/Documents/development/personal/claude-canvas/canvas && npx tsc --noEmit 2>&1 | grep -E ''agent-monitor|hooks/\\(pre|post|subagent\\)''\")",
+      "Bash(/bin/bash -c \"cd /Users/alfonsogomez/Documents/development/personal/claude-canvas/canvas && npx tsc --noEmit 2>&1 | grep -E ''transcript|use-transcript'' || echo ''No errors in transcript files''\")",
+      "Bash(/opt/homebrew/bin/bunx tsc:*)",
+      "mcp__plugin_github_github__get_me",
+      "mcp__plugin_github_github__create_repository",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)",
+      "Bash(git -C /Users/alfonsogomez/Documents/development/personal/claude-canvas status)",
+      "Bash(git add:*)"
+    ]
+  }
+}

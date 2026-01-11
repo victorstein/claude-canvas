@@ -3,7 +3,7 @@
 
 import { createIPCServer } from "../ipc/server";
 import { getSocketPath } from "../ipc/types";
-import { spawnCanvas } from "../terminal";
+import { spawnCanvas } from "../terminal/index";
 import type { CanvasMessage } from "../ipc/types";
 import type {
   MeetingPickerConfig,
