@@ -74,7 +74,7 @@ function getShortPath(filePath: string, maxLen: number): string {
   return parts.slice(-2).join("/");
 }
 
-export function DiffDisplay({ diff, width, maxLines = 12, dimmed = false }: DiffDisplayProps) {
+export function DiffDisplay({ diff, width, maxLines = 100, dimmed = false }: DiffDisplayProps) {
   const parsedLines = parseDiffLines(diff.diff);
   const displayLines = parsedLines.slice(0, maxLines);
   const remainingLines = parsedLines.length - maxLines;

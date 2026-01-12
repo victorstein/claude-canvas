@@ -195,10 +195,9 @@ if (input.tool_name === "Edit") {
   diffLines.push(`--- ${filePath}`);
   diffLines.push(`+++ ${filePath}`);
   diffLines.push(`@@ -1,${oldLines.length} +1,${newLines.length} @@`);
-  oldLines.slice(0, 5).forEach(line => diffLines.push(`-${line}`));
-  if (oldLines.length > 5) diffLines.push(`... (${oldLines.length - 5} more removed)`);
-  newLines.slice(0, 5).forEach(line => diffLines.push(`+${line}`));
-  if (newLines.length > 5) diffLines.push(`... (${newLines.length - 5} more added)`);
+  // Include all lines in the diff
+  oldLines.forEach(line => diffLines.push(`-${line}`));
+  newLines.forEach(line => diffLines.push(`+${line}`));
 
   agent.gitDiffs.push({
     timestamp: Date.now(),
@@ -214,8 +213,8 @@ if (input.tool_name === "Edit") {
 
   const diffLines: string[] = [];
   diffLines.push(`+++ ${filePath} (new file)`);
-  lines.slice(0, 8).forEach(line => diffLines.push(`+${line}`));
-  if (lines.length > 8) diffLines.push(`... (${lines.length - 8} more lines)`);
+  // Include all lines
+  lines.forEach(line => diffLines.push(`+${line}`));
 
   agent.gitDiffs.push({
     timestamp: Date.now(),
