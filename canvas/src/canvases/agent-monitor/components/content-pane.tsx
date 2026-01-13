@@ -163,12 +163,11 @@ export function ContentPane({
         )}
       </Box>
 
-      {/* Instructions (if available, truncated) */}
+      {/* Instructions (if available) */}
       {agent.instructions && (
-        <Box paddingX={1} marginBottom={1}>
-          <Text color={THEME.dim}>
-            {agent.instructions.slice(0, contentWidth - 4)}
-            {agent.instructions.length > contentWidth - 4 ? "..." : ""}
+        <Box paddingX={1} marginBottom={1} flexDirection="column">
+          <Text color={THEME.dim} wrap="wrap">
+            {agent.instructions}
           </Text>
         </Box>
       )}

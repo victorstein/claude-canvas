@@ -32,7 +32,8 @@
       "Bash(python3 -m json.tool:*)",
       "Bash(python3:*)",
       "Bash(lsof:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(git remote set-url:*)"
     ]
   }
 }

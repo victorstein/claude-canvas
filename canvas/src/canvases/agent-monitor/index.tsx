@@ -260,9 +260,32 @@ export function AgentMonitorCanvas({
       return;
     }
 
-    // Quit
+    // Close tab or quit
     if (key.escape || input === "q") {
-      exit();
+      const agentIds = Object.keys(agents);
+
+      // If only one tab (or none), quit entirely
+      if (agentIds.length <= 1) {
+        exit();
+        return;
+      }
+
+      // Multiple tabs: close current tab
+      if (activeTabId) {
+        const currentIdx = agentIds.indexOf(activeTabId);
+        const nextIdx = currentIdx > 0 ? currentIdx - 1 : 1;
+        const nextId = agentIds[nextIdx];
+
+        // Remove the current agent from state
+        setAgents((prev) => {
+          const updated = { ...prev };
+          delete updated[activeTabId];
+          return updated;
+        });
+
+        // Switch to next tab
+        if (nextId) setActiveTabId(nextId);
+      }
       return;
     }
 
@@ -434,7 +457,7 @@ export function AgentMonitorCanvas({
           <Text color={THEME.borderDim}> │ </Text>
           <Text color={THEME.label}>g</Text>/G: top/bottom
           <Text color={THEME.borderDim}> │ </Text>
-          <Text color={THEME.label}>q</Text>: quit
+          <Text color={THEME.label}>q</Text>: close
         </Text>
       </Box>
     </Box>
