@@ -6,6 +6,13 @@
  * It updates the tracking file and sends an IPC update to the canvas.
  */
 
+// Auto-install dependencies if missing
+const pluginRoot = import.meta.dir.replace("/src/hooks", "");
+const nodeModulesPath = `${pluginRoot}/node_modules`;
+if (!(await Bun.file(nodeModulesPath).exists())) {
+  await Bun.$`bun install --cwd ${pluginRoot} --silent`.quiet();
+}
+
 import type {
   AgentTrackingFile,
   SubagentStopInput,

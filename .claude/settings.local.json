@@ -33,7 +33,8 @@
       "Bash(python3:*)",
       "Bash(lsof:*)",
       "Bash(cat:*)",
-      "Bash(git remote set-url:*)"
+      "Bash(git remote set-url:*)",
+      "Bash(xargs ls:*)"
     ]
   }
 }

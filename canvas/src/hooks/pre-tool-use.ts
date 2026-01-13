@@ -6,6 +6,13 @@
  * It tracks sub-agents and spawns the monitor canvas when any agent starts running.
  */
 
+// Auto-install dependencies if missing
+const pluginRoot = import.meta.dir.replace("/src/hooks", "");
+const nodeModulesPath = `${pluginRoot}/node_modules`;
+if (!(await Bun.file(nodeModulesPath).exists())) {
+  await Bun.$`bun install --cwd ${pluginRoot} --silent`.quiet();
+}
+
 import { spawnCanvas } from "../terminal/index";
 import type {
   AgentTrackingFile,
